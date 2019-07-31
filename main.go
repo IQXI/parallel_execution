@@ -13,7 +13,7 @@ func executor(functions []func() error, N, errCount int) {
 		N = len(functions)
 	}
 
-	channel := make(chan struct{}, N)
+	channel := make(chan int, N)
 	var wg sync.WaitGroup
 	var mutex = &sync.Mutex{}
 	wg.Add(len(functions))
@@ -25,7 +25,7 @@ func executor(functions []func() error, N, errCount int) {
 			os.Exit(1)
 		}
 
-		channel <- struct{}{}
+		channel <- i
 
 		go func(f func() error, errC *int) {
 			err := f()
